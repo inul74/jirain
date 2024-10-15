@@ -5,9 +5,9 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
-import { ReactElement, ReactNode } from "react";
+import { PropsWithChildren } from "react";
 
-function makeQueryClient(): QueryClient {
+function makeQueryClient() {
   return new QueryClient({
     defaultOptions: {
       queries: {
@@ -19,26 +19,16 @@ function makeQueryClient(): QueryClient {
 
 let browserQueryClient: QueryClient | undefined = undefined;
 
-function getQueryClient(): QueryClient {
+function getQueryClient() {
   if (isServer) {
     return makeQueryClient();
   } else {
-    if (!browserQueryClient) {
-      browserQueryClient = makeQueryClient();
-    }
+    if (!browserQueryClient) browserQueryClient = makeQueryClient();
     return browserQueryClient;
   }
 }
 
-interface QueryProviderProps {
-  children: ReactNode;
-}
-
-export const QueryProvider: ({
-  children,
-}: QueryProviderProps) => ReactElement = ({
-  children,
-}: QueryProviderProps): ReactElement => {
+export const QueryProvider = ({ children }: PropsWithChildren) => {
   const queryClient = getQueryClient();
 
   return (
