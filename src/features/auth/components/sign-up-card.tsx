@@ -1,3 +1,5 @@
+"use client";
+
 import { z } from "zod";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
@@ -28,7 +30,7 @@ import { registerSchema } from "../schemas";
 import { useRegister } from "../api/use-register";
 
 export const SignUpCard = () => {
-  const { mutate } = useRegister();
+  const { mutate, isPending } = useRegister();
 
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
@@ -112,8 +114,8 @@ export const SignUpCard = () => {
                 </FormItem>
               )}
             />
-            <Button disabled={false} size="lg" className="w-full">
-              Sign Up
+            <Button disabled={isPending} size="lg" className="w-full">
+              Register
             </Button>
           </form>
         </Form>
@@ -123,7 +125,7 @@ export const SignUpCard = () => {
       </div>
       <CardContent className="p-5 flex flex-col gap-y-4">
         <Button
-          disabled={false}
+          disabled={isPending}
           variant="secondary"
           size="lg"
           className="w-full"
@@ -131,7 +133,12 @@ export const SignUpCard = () => {
           <FcGoogle className="mr-2 size-5" />
           Sign up with Google
         </Button>
-        <Button disabled={false} variant="outline" size="lg" className="w-full">
+        <Button
+          disabled={isPending}
+          variant="outline"
+          size="lg"
+          className="w-full"
+        >
           <FaGithub className="mr-2 size-5" />
           Sign up with Github
         </Button>
