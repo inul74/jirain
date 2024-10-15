@@ -1,11 +1,9 @@
-import { Models } from "node-appwrite";
 import { redirect } from "next/navigation";
 
 import { getCurrent } from "@/features/auth/actions";
-import { UserButton } from "@/features/auth/components/user-button";
 
 export default async function Home() {
-  const user: Models.User<Models.Preferences> | null = await getCurrent();
+  const user = await getCurrent();
 
   if (!user) {
     redirect("/sign-in");
@@ -13,7 +11,7 @@ export default async function Home() {
 
   return (
     <div>
-      <UserButton />
+      <h1>This is a home page</h1>
     </div>
   );
 }

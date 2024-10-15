@@ -1,5 +1,3 @@
-"use server";
-
 import { cookies } from "next/headers";
 import { Account, Client, Models } from "node-appwrite";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";

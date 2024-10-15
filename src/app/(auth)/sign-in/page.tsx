@@ -1,19 +1,16 @@
-import { ReactElement } from "react";
-import { Models } from "node-appwrite";
 import { redirect } from "next/navigation";
 
 import { getCurrent } from "@/features/auth/actions";
 import { SignInCard } from "@/features/auth/components/sign-in-card";
 
-const SignInPage: () => Promise<ReactElement> =
-  async (): Promise<ReactElement> => {
-    const user: Models.User<Models.Preferences> | null = await getCurrent();
+const SignInPage = async () => {
+  const user = await getCurrent();
 
-    if (user) {
-      redirect("/");
-    }
+  if (user) {
+    redirect("/");
+  }
 
-    return <SignInCard />;
-  };
+  return <SignInCard />;
+};
 
 export default SignInPage;
