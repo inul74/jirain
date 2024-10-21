@@ -76,6 +76,7 @@ export const SignUpCard = () => {
                       {...field}
                       type="text"
                       placeholder="Enter your name"
+                      autoComplete="name"
                     />
                   </FormControl>
                   <FormMessage />
@@ -92,6 +93,7 @@ export const SignUpCard = () => {
                       {...field}
                       type="email"
                       placeholder="Enter email address"
+                      autoComplete="email"
                     />
                   </FormControl>
                   <FormMessage />
@@ -108,6 +110,7 @@ export const SignUpCard = () => {
                       {...field}
                       type="password"
                       placeholder="Enter password"
+                      autoComplete="current-password"
                     />
                   </FormControl>
                   <FormMessage />
