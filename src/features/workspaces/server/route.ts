@@ -128,7 +128,7 @@ const app = new Hono()
         uploadedImage = image;
       }
 
-      const updatedWorkspace = await databases.updateDocument(
+      const workspace = await databases.updateDocument(
         DATABASE_ID,
         WORKSPACES_ID,
         workspaceId,
@@ -138,8 +138,29 @@ const app = new Hono()
         }
       );
 
-      return c.json({ data: updatedWorkspace });
+      return c.json({ data: workspace });
     }
-  );
+  )
+  .delete("/:workspaceId", sessionMiddleware, async (c) => {
+    const databases = c.get("databases");
+    const user = c.get("user");
+    const { workspaceId } = c.req.param();
+
+    const member = await getMember({
+      databases,
+      workspaceId,
+      userId: user.$id,
+    });
+
+    if (!member || member.role !== MemberRole.ADMIN) {
+      return c.json({ error: "Unauthorized" }, 401);
+    }
+
+    // TODO: Delete members, projects, and tasks
+
+    await databases.deleteDocument(DATABASE_ID, WORKSPACES_ID, workspaceId);
+
+    return c.json({ data: { $id: workspaceId } });
+  });
 
 export default app;
