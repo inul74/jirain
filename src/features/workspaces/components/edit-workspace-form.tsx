@@ -3,12 +3,14 @@
 import { z } from "zod";
 import { useRef } from "react";
 import Image from "next/image";
-import { ArrowLeft, ImageIcon } from "lucide-react";
+import { toast } from "sonner";
+import { ArrowLeft, CopyIcon, ImageIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { cn } from "@/lib/utils";
+import { useConfirm } from "@/hooks/use-confirm";
 import { DottedSeparator } from "@/components/dotted-separator";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -28,7 +30,7 @@ import { Workspace } from "../types";
 import { updateWorkspaceSchema } from "../schemas";
 import { useUpdateWorkspace } from "../api/use-update-workspace";
 import { useDeleteWorkspace } from "../api/use-delete-workspace";
-import { useConfirm } from "@/hooks/use-confirm";
+import { useResetInviteCode } from "../api/use-reset-invite-code";
 
 interface EditWorkspaceFormProps {
   onCancel?: () => void;
@@ -48,6 +50,15 @@ export const EditWorkspaceForm = ({
   const [DeleteDialog, confirmDelete] = useConfirm(
     "Delete workspace",
     "This action cannot be undone",
+    "destructive"
+  );
+
+  const { mutate: resetInviteCode, isPending: isResettingInviteCode } =
+    useResetInviteCode();
+
+  const [ResetDialog, confirmReset] = useConfirm(
+    "Reset invite link",
+    "This will invalidate the current invite link",
     "destructive"
   );
 
@@ -102,9 +113,33 @@ export const EditWorkspaceForm = ({
     );
   };
 
+  const handleResetInviteCode = async () => {
+    const ok = await confirmReset();
+
+    if (!ok) return;
+
+    resetInviteCode(
+      {
+        param: { workspaceId: initialValues.$id },
+      },
+      {
+        onSuccess: () => router.refresh(),
+      }
+    );
+  };
+
+  const fullInviteLink = `${window.location.origin}/workspaces/${initialValues.$id}/join/${initialValues.inviteCode}`;
+
+  const handleCopyInviteLink = () => {
+    navigator.clipboard
+      .writeText(fullInviteLink)
+      .then(() => toast.success("Invite link copied to clipboard"));
+  };
+
   return (
     <div className="flex flex-col gap-y-4">
       <DeleteDialog />
+      <ResetDialog />
       <Card className="size-full border-none shadow-none">
         <CardHeader className="flex flex-row items-center gap-x-4 p-7 space-y-0">
           <Button
@@ -233,12 +268,50 @@ export const EditWorkspaceForm = ({
                 >
                   Cancel
                 </Button>
-                <Button disabled={isPending} type="submit" size="lg">
+                <Button
+                  disabled={isPending}
+                  type="submit"
+                  className="w-fit ml-auto"
+                >
                   Save changes
                 </Button>
               </div>
             </form>
           </Form>
+        </CardContent>
+      </Card>
+
+      <Card className="size-full border-none shadow-none">
+        <CardContent className="p-7">
+          <div className="flex flex-col">
+            <h3 className="font-bold">Invite Members</h3>
+            <p className="text-sm text-muted-foreground">
+              Use the invite link to add members to your workspace
+            </p>
+            <div className="mt-4">
+              <div className="flex items-center gap-x-2">
+                <Input name="inviteLink" value={fullInviteLink} readOnly />
+                <Button
+                  onClick={handleCopyInviteLink}
+                  variant="secondary"
+                  className="size-12"
+                >
+                  <CopyIcon className="size-5" />
+                </Button>
+              </div>
+            </div>
+            <DottedSeparator className="py-7" />
+            <Button
+              type="button"
+              className="w-fit ml-auto"
+              size="sm"
+              variant="tertiary"
+              disabled={isPending || isResettingInviteCode}
+              onClick={handleResetInviteCode}
+            >
+              Reset invite link
+            </Button>
+          </div>
         </CardContent>
       </Card>
 
