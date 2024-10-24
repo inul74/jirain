@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { getCurrent } from "@/features/auth/queries";
 import { getProject } from "@/features/projects/queries";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
+import { TaskViewSwitcher } from "@/features/tasks/components/task-view-switcher";
 
 interface ProjectIdPageProps {
   params: {
@@ -33,13 +34,16 @@ const ProjectIdPage = async ({ params }: ProjectIdPageProps) => {
           />
           <p className="text-lg font-semibold">{initialValues.name}</p>
         </div>
-        <Button variant="secondary" size="sm" asChild>
-          <Link href={href}>
-            <PencilIcon className="size-4 mr-2" />
-            Edit Project
-          </Link>
-        </Button>
+        <div>
+          <Button variant="secondary" size="sm" asChild>
+            <Link href={href}>
+              <PencilIcon className="size-4 mr-2" />
+              Edit Project
+            </Link>
+          </Button>
+        </div>
       </div>
+      <TaskViewSwitcher />
     </div>
   );
 };
