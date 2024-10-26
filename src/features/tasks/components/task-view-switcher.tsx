@@ -9,6 +9,8 @@ import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
+import { columns } from "./columns";
+import { DataTable } from "./data-table";
 import { DataFilters } from "./data-filters";
 import { useGetTasks } from "../api/use-get-tasks";
 import { useTaskFilters } from "../hooks/use-task-filters";
@@ -70,7 +72,7 @@ export const TaskViewSwitcher = () => {
         ) : (
           <>
             <TabsContent value="table" className="mt-0">
-              {JSON.stringify(tasks)}
+              <DataTable columns={columns} data={tasks?.documents ?? []} />
             </TabsContent>
             <TabsContent value="kanban" className="mt-0">
               Data Kanban

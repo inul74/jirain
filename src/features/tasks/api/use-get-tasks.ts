@@ -47,9 +47,9 @@ export const useGetTasks = ({
         throw new Error("Failed to fetch tasks");
       }
 
-      const { documents, total } = await response.json();
+      const { data } = await response.json();
 
-      return { documents, total };
+      return data;
     },
   });
 
