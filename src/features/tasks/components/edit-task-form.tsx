@@ -81,16 +81,16 @@ export const EditTaskForm = ({
 
   return (
     <Card className="size-full border-none shadow-none">
-      <CardHeader className="flex p-7">
+      <CardHeader className="flex py-1">
         <CardTitle className="text-xl font-bold">Edit a task</CardTitle>
       </CardHeader>
-      <div className="px-7">
+      <div className="px-2 py-1">
         <DottedSeparator />
       </div>
-      <CardContent className="p-7">
+      <CardContent className="px-3">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="flex flex-col gap-y-4">
+            <div className="flex flex-col gap-y-2">
               <FormField
                 control={form.control}
                 name="name"
@@ -222,11 +222,11 @@ export const EditTaskForm = ({
                 )}
               />
             </div>
-            <DottedSeparator className="py-7" />
+            <DottedSeparator className="py-2" />
             <div className="flex items-center justify-between">
               <Button
                 type="button"
-                size="lg"
+                size="sm"
                 variant="secondary"
                 onClick={onCancel}
                 disabled={isPending}
@@ -234,7 +234,7 @@ export const EditTaskForm = ({
               >
                 Cancel
               </Button>
-              <Button disabled={isPending} type="submit" size="lg">
+              <Button disabled={isPending} type="submit" size="sm">
                 Save changes
               </Button>
             </div>
