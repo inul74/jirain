@@ -67,12 +67,7 @@ export const EditProjectForm = ({
       image: values.image instanceof File ? values.image : "",
     };
     mutate(
-      { form: finalValues, param: { projectId: initialValues.$id } },
-      {
-        onSuccess: () => {
-          form.reset();
-        },
-      }
+      { form: finalValues, param: { projectId: initialValues.$id } }
     );
   };
 
@@ -113,9 +108,9 @@ export const EditProjectForm = ({
               onCancel
                 ? onCancel
                 : () =>
-                    router.push(
-                      `/workspaces/${initialValues.workspaceId}/projects/${initialValues.$id}`
-                    )
+                  router.push(
+                    `/workspaces/${initialValues.workspaceId}/projects/${initialValues.$id}`
+                  )
             }
           >
             <ArrowLeft className="size-4 mr-2" />

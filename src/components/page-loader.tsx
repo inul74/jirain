@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 export const PageLoader = () => {
   return (
-    <div className="flex items-center justify-center h-full">
+    <div className="flex items-center justify-center max-h-screen">
       <Image
         src="/spinner.gif"
         alt="Loading..."

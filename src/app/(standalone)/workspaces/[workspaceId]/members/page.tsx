@@ -5,7 +5,6 @@ import { MembersList } from "@/features/members/components/members-list";
 
 const WorkspaceIdMembersPage = async () => {
   const user = await getCurrent();
-
   if (!user) redirect("/sign-in");
 
   return (
