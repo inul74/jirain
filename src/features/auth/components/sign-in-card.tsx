@@ -18,6 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
+import { signUpWithGithub, signUpWithGoogle } from "@/lib/oauth";
 import { DottedSeparator } from "@/components/dotted-separator";
 
 import { loginSchema } from "../schemas";
@@ -94,6 +95,7 @@ export const SignInCard = () => {
       </div>
       <CardContent className="p-5 flex flex-col gap-y-4">
         <Button
+          onClick={() => signUpWithGoogle()}
           disabled={isPending}
           variant="secondary"
           size="lg"
@@ -103,6 +105,7 @@ export const SignInCard = () => {
           Sign in with Google
         </Button>
         <Button
+          onClick={() => signUpWithGithub()}
           disabled={isPending}
           variant="outline"
           size="lg"
